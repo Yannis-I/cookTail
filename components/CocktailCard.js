@@ -1,12 +1,16 @@
 import * as React from 'react';
 import { View, Text, Image, Dimensions, StyleSheet, TouchableOpacity } from 'react-native';
+import FavorisButton from '../components/FavorisButton';
 
 export default function CocktailCard({navigation, cocktail}) {
 
     return (
         <TouchableOpacity onPress={ () => navigation.navigate('Details', {cocktail}) } >
             <View style={styles.container}>
-                <Text style={styles.title} >{cocktail.name}</Text>
+                <View style={styles.header} >
+                    <Text style={styles.title} >{cocktail.name}</Text>
+                    <FavorisButton cocktail={cocktail}/>
+                </View>
                 <Image source={{ uri: cocktail.image }} style={styles.image} />
             </View>
         </TouchableOpacity>
@@ -23,14 +27,19 @@ const styles = StyleSheet.create({
         width: "100%",
         marginTop: 40,
     },
+    header: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: width - 40,
+        height: 50,
+        backgroundColor: 'deepskyblue',
+        position: 'relative',
+    },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        height: 50,
-        width: width - 40,
         verticalAlign: 'middle',
-        backgroundColor: 'deepskyblue',
         color: 'midnightblue',
     },
     image: {

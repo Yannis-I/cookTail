@@ -1,28 +1,19 @@
 import * as React from 'react';
-import { View, Text, Button, StyleSheet } from 'react-native';
+import { View, Text, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
-import HomeScreen from './components/HomeScreen';
-
-function FavorisScreen({ navigation }) {
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Favoris Screen</Text>
-      <Button
-        title="Go to Home"
-        onPress={() => navigation.navigate('Home')}
-      />
-    </View>
-  );
-}
+import HomeScreen from './screens/HomeScreen';
+import FavorisScreen from './screens/FavorisScreen';
+import { store } from './redux/store'
+import { Provider } from 'react-redux'
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
 
   return (
+    <Provider store={store}>
       <NavigationContainer>
         <Tab.Navigator initialRouteName="Home" 
             screenOptions={{ tabBarShowLabel: false }}>
@@ -37,9 +28,13 @@ export default function App() {
           <Tab.Screen 
             name="Favoris"
             component={FavorisScreen}
-            options={{ tabBarIcon: ({ color, size }) => <FontAwesome name="heart" size={size} color={color} /> }}
+            options={{ 
+              tabBarIcon: ({ color, size }) => <FontAwesome name="heart" size={size} color={color} />,
+              headerShown: false,
+            }}
           />
         </Tab.Navigator>
       </NavigationContainer>
+    </Provider>
   );
 }

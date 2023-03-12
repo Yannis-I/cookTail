@@ -1,15 +1,18 @@
-import axios from 'axios';
 import * as React from 'react';
-import { View, Text, Button, StyleSheet, Dimensions, Image, ScrollView, FlatList } from 'react-native';
-import Ingredient from './Ingredient';
+import { View, Text, StyleSheet, Dimensions, Image, ScrollView } from 'react-native';
+import Ingredient from '../components/Ingredient';
+import FavorisButton from '../components/FavorisButton';
 
-export default function DetailsScreen({navigation, route}) {
+export default function DetailsScreen({route}) {
     const cocktail = route.params.cocktail;
 
     return (
         <ScrollView>
             <View style={styles.container}>
-                <Text style={styles.title} >{cocktail.name}</Text>
+                <View style={styles.header} >
+                    <Text style={styles.title} >{cocktail.name}</Text>
+                    <FavorisButton cocktail={cocktail}/>
+                </View>
                 <Image source={{ uri: cocktail.image }} style={styles.image} />
                 <View style={styles.triangle} />
                 <View style={{width: 20, height: 100, borderRadius: 0, backgroundColor: "deepskyblue",}} />
@@ -17,11 +20,11 @@ export default function DetailsScreen({navigation, route}) {
                 <Text style={styles.midTitle} >Instructions</Text>
                 <Text style={styles.instructions} >{cocktail.instructions}</Text>
                 <Text style={styles.midTitle} >Ingredients</Text>
-                <FlatList 
-                data={cocktail.ingredients}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={({item}) => <Ingredient ingredient={item} /> }
-                />
+                {
+                    cocktail.ingredients.map((item, index) => (
+                        <Ingredient key={index} ingredient={item} />
+                    ))
+                }
             </View>
         </ScrollView>
     );
@@ -31,20 +34,26 @@ const width = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         width: "100%",
         marginTop: 40,
+        marginBottom: 40
+    },
+    header: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: width - 40,
+        height: 50,
+        backgroundColor: 'deepskyblue',
+        position: 'relative',
     },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
         textAlign: 'center',
-        height: 50,
-        width: width - 40,
         verticalAlign: 'middle',
-        backgroundColor: 'deepskyblue',
         color: 'midnightblue',
     },
     image: {
