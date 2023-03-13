@@ -13,13 +13,13 @@ export default MenuBurger = ({ navigation }) => {
     return (
         <View style={styles.container}>
             {screens.map((screen) => (
-            <TouchableOpacity
-                key={screen.routeName}
-                style={styles.drawerItem}
-                onPress={() => navigation.navigate(screen.routeName)}
-            >
-                <Text style={styles.drawerItemText}>{screen.text}</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                  key={screen.routeName}
+                  style={styles.drawerItem}
+                  onPress={() => navigation.navigate(screen.routeName)}
+              >
+                  <Text style={styles.drawerItemText}>{screen.text}</Text>
+              </TouchableOpacity>
             ))}
         </View>
   )
