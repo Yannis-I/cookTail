@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
+import AddCart from './AddCart';
 
 export default function Ingredient({ingredient}) {
     return (
@@ -7,6 +8,7 @@ export default function Ingredient({ingredient}) {
                 <Image source={{uri: `https://www.thecocktaildb.com/images/ingredients/${ingredient.name}-Small.png`}} style={styles.image} />
                 <Text style={[styles.text, styles.name]} >{ingredient.name}</Text>
                 <Text style={styles.text} >{ingredient.quantity}</Text>
+                <AddCart ingredient={ingredient} />
             </View>
     );
 }
@@ -21,7 +23,7 @@ const styles = StyleSheet.create({
         width: "100%",
         marginTop: 20,
         paddingRight: 20,
-        paddingLeft: 20,
+        paddingLeft: 0,
     },
     image: {
         width: 80,

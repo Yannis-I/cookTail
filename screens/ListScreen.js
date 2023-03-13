@@ -2,6 +2,7 @@ import axios from 'axios';
 import * as React from 'react';
 import { View, FlatList } from 'react-native';
 import CocktailCard from '../components/CocktailCard';
+import formatCocktail from '../utils/formater';
 
 export default function ListScreen({navigation}) {
     const [randomCocktails, setRandomCocktails] = React.useState([]);
@@ -24,13 +25,10 @@ export default function ListScreen({navigation}) {
                 while (newCocktail === null) {
                     const response = await axios.get('https://www.thecocktaildb.com/api/json/v1/1/random.php');
                     newCocktail = formatCocktail(response.data.drinks[0]);
-
-                    cocktails.forEach(cocktail => {
-                        if(cocktail.id === newCocktail.id){
-                            console.log("cocktail : " + cocktail + "/// newCocktail : " + newCocktail);
-                            newCocktail = null;
-                        }
-                    });
+                    
+                    if(cocktails.some(item => item.id === newCocktail.id) || randomCocktails.some(item => item.id === newCocktail.id)){
+                        newCocktail = null;
+                    }
                 }
                 cocktails.push(newCocktail);
             }
@@ -55,26 +53,6 @@ export default function ListScreen({navigation}) {
           </View>
         ) : null;
       };
-
-    const formatCocktail = (data) => {
-        const ingredients = [];
-        for(let i = 1; i <= 15; i++){
-            const idIngredient = `strIngredient${i}`;
-            const idQuantity = `strMeasure${i}`;
-            if(data[idIngredient]){
-                ingredients.push({name: data[idIngredient], quantity: data[idQuantity]});
-            }
-        }
-
-        return {
-            id: data.idDrink,
-            name: data.strDrink,
-            image: data.strDrinkThumb,
-            ingredients: ingredients,
-            instructions: data.strInstructions
-        }
-    }
-
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: "100%" }}>
