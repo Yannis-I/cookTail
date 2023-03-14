@@ -3,11 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 
 export default MenuBurger = ({ navigation }) => {
     const screens = [
-        {routeName: 'ListScreen', text: 'Cocktails aléatoire'},
-        {routeName: 'ListTendencyScreen', text: 'Cocktails tendances'},
-        {routeName: 'ListSearchScreen', text: 'Rechercher un cocktail'},
-        {routeName: 'ListFavorisScreen', text: 'Cocktails Favoris'},
-        {routeName: 'CartScreen', text: 'Liste de courses'},
+        {routeName: 'List', text: 'Cocktails aléatoire'},
+        {routeName: 'ListTendency', text: 'Cocktails tendances'},
+        {routeName: 'ListSearch', text: 'Rechercher un cocktail'},
+        {routeName: 'ListFavoris', text: 'Cocktails Favoris'},
+        {routeName: 'Cart', text: 'Liste de courses'},
     ]
 
     return (
