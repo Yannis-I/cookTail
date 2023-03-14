@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as React from 'react';
-import { View, FlatList } from 'react-native';
+import { View, FlatList, Text, StyleSheet } from 'react-native';
 import CocktailCard from '../components/CocktailCard';
 import formatCocktail from '../utils/formater';
 
@@ -56,6 +56,7 @@ export default function ListScreen({navigation}) {
 
     return (
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', width: "100%" }}>
+        <Text style={styles.title} >Cocktails Aléatoires</Text>
         <FlatList
         data={randomCocktails}
         keyExtractor={(cocktail) => cocktail.id}
@@ -68,3 +69,11 @@ export default function ListScreen({navigation}) {
       </View>
     );
 }
+
+const styles = StyleSheet.create({
+    title: {
+        marginTop: 10,
+        fontSize: 22,
+        fontWeight: 'bold'
+    }
+})

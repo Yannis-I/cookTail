@@ -4,24 +4,24 @@ import { TextInput, View, StyleSheet, Text, TouchableOpacity, FlatList } from 'r
 import formatCocktail from '../utils/formater';
 import CocktailCard from '../components/CocktailCard'
 
-export default function ListSearchScreen({navigation}) {
+export default function ListCategoryScreen({navigation}) {
     const [errorMessage, setErrorMessage] = React.useState(null);
-    const [ingredientList, setIngredientList] = React.useState([]);
+    const [categoriesList, setCategoriesList] = React.useState([]);
     const [inputValue, setInputValue] = React.useState("");
     const [autocompletionList, setAutocompletionList] = React.useState([]);
-    const [ingredientIsValid, setIngredientIsValid] = React.useState(false);
-    const [cocktailsByIngredient, setcocktailsByIngredient] = React.useState([]);
+    const [categoryIsValid, setCategoryIsValid] = React.useState(false);
+    const [cocktailsByCategories, setcocktailsByCategories] = React.useState([]);
 
     React.useEffect(() => {
         (async () => { 
-            await requestIngredients();
+            await requestCategories();
         })();
     }, []);
 
     React.useEffect(() => {
         let newAutocompletionList = [];
         if(inputValue != ""){
-            ingredientList.forEach(item => {
+            categoriesList.forEach(item => {
                 if(item.includes(inputValue)){
                     newAutocompletionList.push(item);
                 }
@@ -30,40 +30,41 @@ export default function ListSearchScreen({navigation}) {
         setAutocompletionList(newAutocompletionList);
     }, [inputValue])
 
-    const requestIngredients = async () => {
+    const requestCategories = async () => {
         try {
-            const response = await axios.get('https://www.thecocktaildb.com/api/json/v1/1/list.php?i=list');
-            const formattedDatas = response.data.drinks.map(item => item.strIngredient1)
-            setIngredientList(formattedDatas);
+            const response = await axios.get('https://www.thecocktaildb.com/api/json/v1/1/list.php?c=list');
+            console.log(response.data);
+            const formattedDatas = response.data.drinks.map(item => item.strCategory)
+            setCategoriesList(formattedDatas);
         } catch (error) {
             console.error(error);
         }
     }
 
-    const requestCocktail = async (strIngredient) => {
+    const requestCocktail = async (strCategorie) => {
         try {
-            const response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?i=${strIngredient}`)
+            const response = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/filter.php?c=${strCategorie}`)
 
             const formattedCocktails = await Promise.all(response.data.drinks.map(async drink => {
                 const response2 = await axios.get(`https://www.thecocktaildb.com/api/json/v1/1/lookup.php?i=${drink.idDrink}`)
                 return formatCocktail(response2.data.drinks[0])
             }))
-            setcocktailsByIngredient(formattedCocktails);
+            setcocktailsByCategories(formattedCocktails);
         } catch (error) {
             console.error(error);
             setErrorMessage('Une erreur est survenu réessayez ultérieurement')
         }
     }
 
-    const validationIngredient = (strIngredient) => {
-        setInputValue(strIngredient)
-        setIngredientIsValid(true)
-        requestCocktail(strIngredient)
+    const validationCategorie = (strCategorie) => {
+        setInputValue(strCategorie)
+        setCategoryIsValid(true)
+        requestCocktail(strCategorie)
     }
 
     const onSubmitEditing = () => {
-        if(ingredientList.includes(inputValue)){
-            setIngredientIsValid(true)
+        if(categoriesList.includes(inputValue)){
+            setCategoryIsValid(true)
             requestCocktail(inputValue)
         }
     }
@@ -75,7 +76,7 @@ export default function ListSearchScreen({navigation}) {
                 keyExtractor={(item, index) => index}
                 renderItem={({item}) => (
                     <>
-                        <TouchableOpacity style={styles.completion} onPress={() => validationIngredient(item)}>
+                        <TouchableOpacity style={styles.completion} onPress={() => validationCategorie(item)}>
                             <Text style={styles.completionText} >{item}</Text>
                         </TouchableOpacity>
                         <View style={styles.separator} />
@@ -88,13 +89,13 @@ export default function ListSearchScreen({navigation}) {
 
     const onChangeText = (text) => {
         setInputValue(text)
-        setIngredientIsValid(false)
+        setCategoryIsValid(false)
     }
 
     return (
       <View style={{ flex: 1, alignItems: 'center', marginTop: 20, width: "100%" }}>
         <TextInput 
-            placeholder='Entrez un ingredient' 
+            placeholder='Entrez un catégorie' 
             onChangeText={text => onChangeText(text)}
             value={inputValue}
             autoFocus={true}
@@ -103,19 +104,19 @@ export default function ListSearchScreen({navigation}) {
             style={styles.search}
         />
         { 
-            (autocompletionList.length != 0 && !ingredientIsValid)
+            (autocompletionList.length != 0 && !categoryIsValid)
             ? 
                 autocompletion() 
             : 
-                (inputValue != "" && !ingredientIsValid) && <Text>Aucun ingredient trouvé</Text> 
+                (inputValue != "" && !categoryIsValid) && <Text>Aucune catégories trouvé</Text> 
         }
         {
-            (ingredientIsValid && cocktailsByIngredient.length != 0)
+            (categoryIsValid && cocktailsByCategories.length != 0)
             &&
                 (!errorMessage)
                 ?
                     <FlatList 
-                        data={cocktailsByIngredient}
+                        data={cocktailsByCategories}
                         keyExtractor={item => item.id}
                         renderItem={item => <CocktailCard cocktail={item.item} navigation={navigation} />}
                         style={{width: '100%'}}

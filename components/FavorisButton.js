@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import { useSelector, useDispatch, connect } from 'react-redux';
+import { useDispatch, connect } from 'react-redux';
 import { decrement, increment } from '../redux/favorisSlice';
 import { FontAwesome } from '@expo/vector-icons';
 

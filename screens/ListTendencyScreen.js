@@ -1,6 +1,6 @@
 import axios from 'axios';
 import * as React from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import formatCocktail from '../utils/formater';
 import CocktailCard from '../components/CocktailCard'
 
@@ -40,7 +40,7 @@ export default function ListTendencyScreen({navigation}) {
 
     return (
       <View style={{ flex: 1, alignItems: 'center', marginTop: 20, width: "100%" }}>
-        <Text style={{}}>Cocktail tendences</Text>
+        <Text style={styles.title}>Cocktail tendences</Text>
         {
             (!errorMessage)
             ?
@@ -56,3 +56,11 @@ export default function ListTendencyScreen({navigation}) {
       </View>
     );
 }
+
+const styles = StyleSheet.create({
+    title: {
+        marginTop: 10,
+        fontSize: 22,
+        fontWeight: 'bold'
+    }
+})

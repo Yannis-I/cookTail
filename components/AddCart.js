@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { useDispatch, connect } from 'react-redux';
 import { decrement, increment } from '../redux/cartSlice';
 import { FontAwesome } from '@expo/vector-icons';
@@ -22,17 +22,11 @@ function AddCart({ingredient, cart}) {
     }
 
     return (
-        <TouchableOpacity style={styles.cart} onPress={updateCart} >
+        <TouchableOpacity onPress={updateCart} >
             <FontAwesome name="cart-plus" size={30} color={isCart ? "midnightblue" : "grey"} />
         </TouchableOpacity>
     );
 }
-
-const styles = StyleSheet.create({
-    cart: {
-        
-    },
-})
 
 const mapStateToProps = (state) => ({
     cart: state.cart.value

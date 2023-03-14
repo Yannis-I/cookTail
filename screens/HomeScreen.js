@@ -1,19 +1,23 @@
 import * as React from 'react';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import ListScreen from './ListScreen';
 import ListTendencyScreen from './ListTendencyScreen';
-import DetailsScreen from './DetailsScreen';
+import MenuBurger from '../components/MenuBurger';
+import ListCategoryScreen from './ListCategoryScreen';
 
+const Drawer = createDrawerNavigator();
 
 export default function HomeScreen() {
-  
-  const Stack = createNativeStackNavigator();
 
   return (
-        <Stack.Navigator initialRouteName='List'>
-            <Stack.Screen name="List" component={ListScreen} />
-            <Stack.Screen name="Details" component={DetailsScreen} />
-            <Stack.Screen name="ListTendency" component={ListTendencyScreen} />
-        </Stack.Navigator>
+        <Drawer.Navigator 
+          initialRouteName='List' 
+          useLegacyImplementation 
+          drawerContent={(props) => <MenuBurger {...props}/> }
+        >
+            <Drawer.Screen name="List" component={ListScreen} />
+            <Drawer.Screen name="Tendency" component={ListTendencyScreen} />
+            <Drawer.Screen name="Category" component={ListCategoryScreen} />
+        </Drawer.Navigator>
   );
 }
